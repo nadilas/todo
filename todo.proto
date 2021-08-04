@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option go_package = "./todopb";
+
+package todopb;
+
+import "google/protobuf/timestamp.proto";
+
+message ADUser {
+  string DisplayName = 1;
+  string Domain = 2;
+  string EmailAddress = 3;
+  string SamAccountName = 4;
+}
+
+message TaskReminderModel {
+  string subject = 1;
+  string additionalContent = 2;
+}
+
+message Reminder {
+  // Represents a specific point in time when a reminder should occur.
+  // If set, reminders until the timestamp are silenced.
+  // If every is not set, only one reminder will be sent at the timestamp
+  google.protobuf.Timestamp at = 4;
+  // Represents a golang serialized duration e.g. 5h0m0s when a reminder should be triggered
+  string every = 5;
+}
+
+message TodoItem {
+  string uuid = 1;
+  string description = 2;
+  string createdBy = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  Reminder reminder = 5;
+  google.protobuf.Timestamp completedAt = 6;
+  string completedBy = 7;
+}
+
+message AddTodoRequest {
+  TodoItem item = 1;
+}
+
+message DeleteTodoRequest {
+  string uuid = 1;
+}
+
+message UpdateTodoRequest {
+  TodoItem item = 1;
+}
+
+message UpdateTodoResponse {
+  TodoItem item = 1;
+}
